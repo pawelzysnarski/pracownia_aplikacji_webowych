@@ -1,10 +1,8 @@
 let http = require('http');
-let fs = require('fs').promises;
+let fs = require('fs');
 let url = require('url');
-const { text } = require('stream/consumers');
 const server = http.createServer(function (req, res) {
-    let x=url.parse(req.url, true);
-    switch(x.pathname){
+    switch(req.url){
         case "/":
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write('Strona glowna!');
@@ -34,21 +32,7 @@ const server = http.createServer(function (req, res) {
             const file = fs.readFileSync("page2.html","utf-8");
             res.end(file.toString());
             break;
-        case "/get_params":
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            const params = new URLSearchParams(x.search);
-            console.log(params.toString());
-            var currtime = new Date();
-            var g = currtime.getTime().toString();
-            var filename = "params_"+g+".json";
-            try{
-                fs.writeFile(filename, JSON.stringify(x.query,null,2),"utf-8");
-            }
-            catch(err){
-                console.log(err);
-            }
-            res.end();
-            break;
+
     }
 });
 server.listen(8080);
