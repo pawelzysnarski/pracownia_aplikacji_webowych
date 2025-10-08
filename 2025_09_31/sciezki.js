@@ -1,7 +1,6 @@
 let http = require('http');
 let fs = require('fs').promises;
 let url = require('url');
-const { text } = require('stream/consumers');
 const server = http.createServer(function (req, res) {
     let x=url.parse(req.url, true);
     switch(x.pathname){
