@@ -1,5 +1,5 @@
 let http = require('http');
-let fs = require('fs').promises;
+let fs = require('fs');
 let url = require('url');
 const server = http.createServer(function (req, res) {
     let x=url.parse(req.url, true);
