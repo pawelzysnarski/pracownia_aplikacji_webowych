@@ -1,0 +1,91 @@
+const express = require('express')
+const mysql = require('mysql');
+
+const app = express()
+
+const con = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'dazabanych',
+})
+app.use('/static',express.static('static'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+con.connect(function (err) {
+  app.get('/', (req, res) => {
+    res.send(
+      "<!DOCTYPE html> <html lang='pl'> <head> <link rel='stylesheet' href='/static/style.css'> </head> <body> <main><h1>Menu</h1><a href='/'>Strona główna</a><a href='/o-nas'>O nas</a><a href='/oferta'>Oferta</a><a href='/kontakt'>Kontakt</a> </main><h1>Strona główna</h1> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor justo sed ligula mattis ultrices. Vestibulum ac bibendum metus. Praesent luctus non neque eget varius. Proin sollicitudin id nibh sed congue. Proin ligula leo, porttitor non condimentum sit amet, varius id orci. Nullam sed nibh volutpat neque hendrerit efficitur. Donec semper eget nisl nec interdum. Sed pellentesque id tellus id sollicitudin.</p> <p>Duis laoreet mollis rhoncus. Nullam varius maximus turpis, sit amet feugiat lorem bibendum eget. Nullam sollicitudin, erat eu egestas accumsan, lacus dolor mollis orci, non sagittis ipsum enim sed tortor. Nullam quis felis malesuada, hendrerit risus vitae, fringilla leo. Nulla vel quam cursus, gravida arcu eu, interdum orci. Nulla eget felis facilisis, convallis augue a, tincidunt odio. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p><p>Nulla tempus eu nunc posuere malesuada. Maecenas blandit risus metus, vehicula volutpat enim finibus a. Aliquam egestas cursus felis id malesuada. Nam vitae metus id risus condimentum volutpat. Vivamus commodo nisi at ipsum posuere lacinia. Integer tortor ligula, congue quis mauris a, porttitor maximus neque. Fusce in mauris nec est mattis scelerisque. Aenean commodo justo a massa interdum feugiat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse non efficitur urna, eget efficitur ligula. In viverra felis non eleifend pellentesque. Nulla luctus commodo est, et lacinia est laoreet ac. Phasellus sollicitudin arcu at finibus pulvinar.</p><p>Fusce ut sem nulla. Proin mollis purus non nunc malesuada, ut euismod velit lobortis. Ut pretium est suscipit sapien tempor, tempus dapibus ipsum imperdiet. Sed malesuada erat libero, in tincidunt purus egestas a. In bibendum in nisi in iaculis. Nullam vel lacus id arcu placerat scelerisque. Duis imperdiet tortor eu ipsum euismod egestas. Maecenas vel ligula bibendum, auctor risus sit amet, ornare dolor. Quisque imperdiet leo consectetur urna aliquet, id pharetra lectus feugiat. Vestibulum tincidunt consequat tristique. Integer sit amet ex feugiat, fringilla odio non, feugiat turpis. Integer auctor at orci non auctor.</p><footer>Paweł Zysnarski 4C</footer> </body> </html>"
+    )
+  })
+  app.post('/kontakt', (req, res) => {
+    console.log('Imię: ' + req.body.imie)
+    console.log('Nazwisko: ' + req.body.nazw)
+    console.log('Email: ' + req.body.mail)
+    console.log('Wiadomość: ' + req.body.mess)
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Connected')
+      let sql =
+        "INSERT INTO messages (Name,Surname,Email,Message) VALUES ('" +
+        req.body.imie +
+        "','" +
+        req.body.nazw +
+        "','" +
+        req.body.mail +
+        "','" +
+        req.body.mess +
+        "')"
+      con.query(sql, function (err) {
+        if (err) throw err
+        console.log('Wstawiono rekord')
+      })
+    }
+    res.redirect('/')
+  })
+  app.get('/o-nas', (req, res) => {
+    res.send(
+      "<!DOCTYPE html> <html lang='pl'> <head> <link rel='stylesheet' href='/static/style.css'> </head> <body> <main><h1>Menu</h1><a href='/'>Strona główna</a><a href='/o-nas'>O nas</a><a href='/oferta'>Oferta</a><a href='/kontakt'>Kontakt</a> </main><h1>O firmie</h1> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor justo sed ligula mattis ultrices. Vestibulum ac bibendum metus. Praesent luctus non neque eget varius. Proin sollicitudin id nibh sed congue. Proin ligula leo, porttitor non condimentum sit amet, varius id orci. Nullam sed nibh volutpat neque hendrerit efficitur. Donec semper eget nisl nec interdum. Sed pellentesque id tellus id sollicitudin.</p> <p>Duis laoreet mollis rhoncus. Nullam varius maximus turpis, sit amet feugiat lorem bibendum eget. Nullam sollicitudin, erat eu egestas accumsan, lacus dolor mollis orci, non sagittis ipsum enim sed tortor. Nullam quis felis malesuada, hendrerit risus vitae, fringilla leo. Nulla vel quam cursus, gravida arcu eu, interdum orci. Nulla eget felis facilisis, convallis augue a, tincidunt odio. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p><p>Nulla tempus eu nunc posuere malesuada. Maecenas blandit risus metus, vehicula volutpat enim finibus a. Aliquam egestas cursus felis id malesuada. Nam vitae metus id risus condimentum volutpat. Vivamus commodo nisi at ipsum posuere lacinia. Integer tortor ligula, congue quis mauris a, porttitor maximus neque. Fusce in mauris nec est mattis scelerisque. Aenean commodo justo a massa interdum feugiat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse non efficitur urna, eget efficitur ligula. In viverra felis non eleifend pellentesque. Nulla luctus commodo est, et lacinia est laoreet ac. Phasellus sollicitudin arcu at finibus pulvinar.</p><img src='/static/pl.png' alt='pl1'><img src='/static/pl2.jpg' alt='pl2'><img src='/static/pl3.jpg' alt='pl3'><footer>Paweł Zysnarski 4C</footer> </body> </html>"
+    )
+  })
+  app.get('/oferta', (req, res) => {
+    res.send(
+      "<!DOCTYPE html> <html lang='pl'> <head> <link rel='stylesheet' href='/static/style.css'> </head> <body> <main><h1>Menu</h1><a href='/'>Strona główna</a><a href='/o-nas'>O nas</a><a href='/oferta'>Oferta</a><a href='/kontakt'>Kontakt</a> </main><h1>Oferta</h1> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor justo sed ligula mattis ultrices. Vestibulum ac bibendum metus. Praesent luctus non neque eget varius. Proin sollicitudin id nibh sed congue. Proin ligula leo, porttitor non condimentum sit amet, varius id orci. Nullam sed nibh volutpat neque hendrerit efficitur. Donec semper eget nisl nec interdum. Sed pellentesque id tellus id sollicitudin.</p> <p>Duis laoreet mollis rhoncus. Nullam varius maximus turpis, sit amet feugiat lorem bibendum eget. Nullam sollicitudin, erat eu egestas accumsan, lacus dolor mollis orci, non sagittis ipsum enim sed tortor. Nullam quis felis malesuada, hendrerit risus vitae, fringilla leo. Nulla vel quam cursus, gravida arcu eu, interdum orci. Nulla eget felis facilisis, convallis augue a, tincidunt odio. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p><p>Nulla tempus eu nunc posuere malesuada. Maecenas blandit risus metus, vehicula volutpat enim finibus a. Aliquam egestas cursus felis id malesuada. Nam vitae metus id risus condimentum volutpat. Vivamus commodo nisi at ipsum posuere lacinia. Integer tortor ligula, congue quis mauris a, porttitor maximus neque. Fusce in mauris nec est mattis scelerisque. Aenean commodo justo a massa interdum feugiat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse non efficitur urna, eget efficitur ligula. In viverra felis non eleifend pellentesque. Nulla luctus commodo est, et lacinia est laoreet ac. Phasellus sollicitudin arcu at finibus pulvinar.</p><table><tr><th>Usługa</th><th>Cena</th></tr><tr><td>Napisanie kodu</td><td>170000zł</td></tr><tr><td>Zrobienie grafiki</td><td>15000zł</td></tr></table><footer>Paweł Zysnarski 4C</footer> </body> </html>"
+    )
+  })
+  app.get('/kontakt', (req, res) => {
+    res.send(
+      "<!DOCTYPE html> <html lang='pl'> <head> <link rel='stylesheet' href='/static/style.css'> </head> <body> <main><h1>Menu</h1><a href='/'>Strona główna</a><a href='/o-nas'>O nas</a><a href='/oferta'>Oferta</a><a href='/kontakt'>Kontakt</a> </main> <h1>Kontakt</h1><form method='post' action='/kontakt'><label>Imię<input type='text' name='imie'></label><label>Nazwisko<input type='text' name='nazw'></label><label>Email<input type='email' name='mail'></label><label>Treść wiadomości<textarea placeholder='podaj treść' name='mess'></textarea></label><button type='submit'>Wyślij</button> <footer>Paweł Zysnarski 4C</footer> </body> </html>"
+    )
+  })
+  app.get('/api/contact-messages', (req, res) => {
+    if (err) {
+      throw err
+    }
+    let sql = 'select * from messages'
+    con.query(sql, function (err, result, fields) {
+      if (err) {
+        throw err
+      }
+      res.json(result)
+    })
+  })
+  app.get('/api/contact-messages/:id', (req, res) => {
+    let sql = 'select * from messages where ID=' + req.params.id
+    con.query(sql, function (err, result, fields) {
+      if (err) {
+        throw err
+      }
+      if(result.length==0){
+        res.status(404).send('No such result')
+      }
+      else{
+        res.json(result)
+      }
+    })
+  })
+});
+app.listen(3000, () => {
+  console.log("Server running at localhost:3000");
+})
