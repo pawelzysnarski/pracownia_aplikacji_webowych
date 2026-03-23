@@ -1,0 +1,99 @@
+.Posts {
+  width: 80%;
+  max-width: 1400px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &Loading, &Error {
+    font-size: 4rem;
+    color: darkblue;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &Loading {
+    &Loader {
+
+      color: darkblue;
+      &:after {
+        box-sizing: border-box;
+      }
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      &:after {
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6.4px solid currentColor;
+        border-color: currentColor transparent currentColor transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+      }
+    }
+  }
+
+  &Post,&Main {
+    border: 0.1rem solid darkblue;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    background-color: #6677aa;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    &Title{
+      text-transform: uppercase;
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    &Email{
+      font-size: 1.5rem;
+    }
+    &Body {
+      font-size: 1.6rem;
+      color: darken(#fff, 80);
+      margin-bottom: 2rem;
+    }
+
+    &Link {
+      background-color: darkblue;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      display: block;
+      width: fit-content;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.4rem;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background-color: darken(darkblue, 20);
+      }
+    }
+
+
+  }
+  &Main{
+    height: 300px;
+    justify-content: space-around;
+  }
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
